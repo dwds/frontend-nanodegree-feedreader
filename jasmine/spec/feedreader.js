@@ -91,9 +91,48 @@ $(function() {
 
     describe('New Feed Selection', function() {
 
-        /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
+        /* Ensures when a new feed is loaded by the loadFeed function
+         * that the content actually changes.
          */
+
+         /* This test uses a MutationObserver to detect whether the children
+          * of .list have been changed via DOM manipulation. See
+          * https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+          */
+        // get target of observer
+        var feed = document.getElementsByClassName('feed')[0];
+
+        // flag for mutation
+        var hasMutated = false;
+
+         // create an observer instance
+        var observer = new MutationObserver(function() {
+          hasMutated = true;
+        });
+
+        /* Configuration of the observer. We are looking for changes to
+         * the child list.
+         */
+        var config = {childList: true};
+
+        // Pass in the target element, as well as the observer options
+        observer.observe(feed, config);
+
+        // wait for API request
+        beforeEach(function(done) {
+          loadFeed(0, function() {
+            done();
+          });
+        });
+
+        // stop observing
+        afterEach(function() {
+          observer.disconnect();
+        });
+
+        it('changes content when a new feed is loaded', function(done) {
+          expect(hasMutated).toBe(true);
+          done();
+        });
     });
 }());
