@@ -68,7 +68,7 @@ $(function() {
      * there is at least a single .entry element within the .feed container.
      */
 
-    // first argument in $.contains must be DOM element, not jQuery object
+    // first argument in $.contains() must be DOM element, not jQuery object
     var feed = document.getElementsByClassName('feed')[0];
 
     // wait for API request
@@ -79,6 +79,7 @@ $(function() {
     });
 
     it('should contain at least one entry in .feed container', function(done) {
+      // expect .feed to contain a descendant with .entry
       expect($.contains(feed, $('.entry')[0])).toBe(true);
       done();
     });
@@ -94,14 +95,17 @@ $(function() {
      * https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
      */
 
-    // get target of observer
+    /* Get target of observer. This is the element we are watching for
+     * DOM mutation.
+     */
     var feed = document.getElementsByClassName('feed')[0];
 
-    // flag for mutation
+    // Flag for mutation. We'll set to true if mutation has occurred.
     var hasMutated = false;
 
-     // create an observer instance
+    // Create an observer instance.
     var observer = new MutationObserver(function() {
+      // When mutation occurs, set flag to true
       hasMutated = true;
     });
 
@@ -110,7 +114,9 @@ $(function() {
      */
     var config = {childList: true};
 
-    // Pass in the target element, as well as the observer options
+    /* This starts the observation of the .feed element.
+     * We pass in the target element, as well as the observer options
+     */
     observer.observe(feed, config);
 
     // wait for API request
