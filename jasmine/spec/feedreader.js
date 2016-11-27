@@ -103,13 +103,13 @@ $(function() {
       loadFeed(0, function() {
         // store content of first feed
         feedContent1 = $feed.html();
-      });
-      // call loadFeed() again (INCEPTION)
-      loadFeed(1, function() {
-        // store content of second feed
-        feedContent2 = $feed.html();
-        // and finally … we're done waiting for API requests
-        done();
+        // call loadFeed() again (INCEPTION)
+        loadFeed(1, function() {
+          // store content of second feed
+          feedContent2 = $feed.html();
+          // and finally … we're done waiting for API requests
+          done();
+        });
       });
     });
 
