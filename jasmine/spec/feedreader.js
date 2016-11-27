@@ -87,30 +87,34 @@ $(function() {
      * that the content actually changes.
      */
 
-    /* This test uses a MutationObserver to detect whether the children
-     * of .list have been changed via DOM manipulation. See
-     * https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+    /* This test uses the callback function of loadFeed() to call
+     * loadFeed() a second time! We store the html content of the
+     * feed each time loadFeed() is called, and then compare
+     * the two strings.
      */
 
-    /* Get target of observer. This is the element we are watching for
-     * DOM mutation.
-     */
+    // Grab .feed and declare vars to store feed content
     var $feed = $('.feed');
     var feedContent1;
     var feedContent2;
 
-    // wait for API request
     beforeEach(function(done) {
+      // call loadFeed() the first time
       loadFeed(0, function() {
+        // store content of first feed
         feedContent1 = $feed.html();
+        // call loadFeed() again (INCEPTION)
         loadFeed(1, function() {
+          // store content of second feed
           feedContent2 = $feed.html();
+          // and finally … we're done waiting for API requests
           done();
-        })
+        });
       });
     });
 
     it('changes content when a new feed is loaded', function() {
+      // compare the two feed contents
       expect(feedContent1).not.toEqual(feedContent2);
     });
   });
