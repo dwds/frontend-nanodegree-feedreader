@@ -87,8 +87,9 @@ $(function() {
      * that the content actually changes.
      */
 
-    /* This test calls loadFeed() twice, and stores the html content of
-     * the feed each time loadFeed() is called. It then compares
+    /* This test uses the callback function of loadFeed() to call
+     * loadFeed() a second time! We store the html content of the
+     * feed each time loadFeed() is called, and then compare
      * the two strings.
      */
 
@@ -103,8 +104,7 @@ $(function() {
         // store content of first feed
         feedContent1 = $feed.html();
       });
-
-      // call loadFeed() again
+      // call loadFeed() again (INCEPTION)
       loadFeed(1, function() {
         // store content of second feed
         feedContent2 = $feed.html();
