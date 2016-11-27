@@ -73,15 +73,12 @@ $(function() {
 
     // wait for API request
     beforeEach(function(done) {
-      loadFeed(0, function() {
-        done();
-      });
+      loadFeed(0, done);
     });
 
-    it('should contain at least one entry in .feed container', function(done) {
+    it('should contain at least one entry in .feed container', function() {
       // expect .feed to contain a descendant with .entry
       expect($.contains(feed, $('.entry')[0])).toBe(true);
-      done();
     });
   });
 
