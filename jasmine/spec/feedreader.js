@@ -95,42 +95,23 @@ $(function() {
     /* Get target of observer. This is the element we are watching for
      * DOM mutation.
      */
-    var feed = document.getElementsByClassName('feed')[0];
-
-    // Flag for mutation. We'll set to true if mutation has occurred.
-    var hasMutated = false;
-
-    // Create an observer instance.
-    var observer = new MutationObserver(function() {
-      // When mutation occurs, set flag to true
-      hasMutated = true;
-    });
-
-    /* Configuration of the observer. We are looking for changes to
-     * the childList.
-     */
-    var config = {childList: true};
-
-    /* This starts the observation of the .feed element.
-     * We pass in the target element, as well as the observer options
-     */
-    observer.observe(feed, config);
+    var $feed = $('.feed');
+    var feedContent1;
+    var feedContent2;
 
     // wait for API request
     beforeEach(function(done) {
       loadFeed(0, function() {
-        done();
+        feedContent1 = $feed.html();
+        loadFeed(1, function() {
+          feedContent2 = $feed.html();
+          done();
+        })
       });
     });
 
-    // stop observing
-    afterEach(function() {
-      observer.disconnect();
-    });
-
-    it('changes content when a new feed is loaded', function(done) {
-      expect(hasMutated).toBe(true);
-      done();
+    it('changes content when a new feed is loaded', function() {
+      expect(feedContent1).not.toEqual(feedContent2);
     });
   });
 }());
